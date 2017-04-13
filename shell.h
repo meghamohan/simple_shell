@@ -32,5 +32,12 @@ char *_strdup(char *str);
 void _strcpy(char *dest,const char *src);
 int _strcmp(const char *s1,const char *s2);
 
+env * addEnv(env **head, char *env_var);
+int create_env_list(env **head);
+size_t print_env_list(env *h);
+char *_getenv(env *envVars, const char *name);
+char **pathParse(env *envList);
+int getExecutablePath(char *cmd);
+
 #endif
 

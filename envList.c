@@ -94,20 +94,17 @@ char **pathParse(env *envList)
 	return (pathList);
 }
 
-void getExecutablePath(char *cmd)
+int getExecutablePath(char *cmd)
 {
 	int result;
-	const char *filename = "/tmp/myfile";
-	result = access (cmd, F_OK); // F_OK tests existence also (R_OK,W_OK,X_OK).
-                                  //            for readable, writeable, executable
+	
+	result = access (cmd, F_OK); 
+/* F_OK tests existence also (R_OK,W_OK,X_OK)
+for readable, writeable, executable */
 	if ( result == 0 )
-	{
-		printf("%s exists!!\n",cmd);
-	}
+		return (1);
 	else
-	{
-   	printf("ERROR: %s doesn't exist!\n",cmd);
-	}
+		return (0);
 }
 void main()
 {
@@ -128,8 +125,10 @@ void main()
 		tempStr1 = str_concat(temp[i], "/");
 		tempStr1 = str_concat(tempStr1, "ls");
 		printf("%s\n",tempStr1);
-		
-		getExecutablePath(tempStr1);
+		if (getExecutablePath(tempStr1))
+			printf("doExcve\n");
+		else
+			printf("checkforbuiltins\n");
 		i++;
 	}
 }
