@@ -26,7 +26,7 @@ typedef struct shellList
 }shellType;
 
 /* function prototypes */
-char *_strcat(char *dest, const char *src);
+char *str_concat(char *s1, char *s2);
 int _strlen(char *s);
 char *_strdup(char *str);
 void _strcpy(char *dest,const char *src);
