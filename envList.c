@@ -1,6 +1,11 @@
 #include "shell.h"
-
-env * addEnv(env **head, char *env_var)
+/**
+* addEnv - adds an environ variable to the environ list
+* @head: environ list
+* @env_var: environ variable to be added
+* Return - returns the endnode
+*/
+env *addEnv(env **head, char *env_var)
 {
 	env *endNode, *temp;
 
@@ -24,6 +29,11 @@ env * addEnv(env **head, char *env_var)
 	return (endNode);
 }
 
+/**
+* creat_env_list - creates a list of environ variables
+* @head: list to where it has to be added
+* Return - returns the number of environ variables
+*/
 int create_env_list(env **head)
 {
 	size_t i;
@@ -37,6 +47,11 @@ int create_env_list(env **head)
 	return (i);
 }
 
+/**
+* print_env_list - prints the environ list
+* @h: environ list to be printed
+* Return - returns the number of variables printed
+*/
 size_t print_env_list(env *h)
 {
 
@@ -47,7 +62,6 @@ size_t print_env_list(env *h)
 		printf("error\n");
 	while (h != NULL)
 	{
-//		printf("key: %s, value: %s\n",h->key,h->value);
 		n++;
 		h = (h)->next;
 	}
@@ -56,6 +70,12 @@ size_t print_env_list(env *h)
 
 }
 
+/**
+* _getenv - gets the value of a specific environ variable
+* @envVars: environ list where the search has to be done
+* @name: environ variable name
+* Return - returns the value of environ
+*/
 char *_getenv(env *envVars, const char *name)
 {
 	env *temp;
@@ -70,6 +90,12 @@ char *_getenv(env *envVars, const char *name)
 	return (NULL);
 }
 
+/**
+* pathParse - parses each directory from the 
+* @head: environ list
+* @env_var: environ variable to be added
+* Return - returns the endnode
+*/
 char **pathParse(env *envList)
 {
 	char **pathList;
@@ -83,17 +109,23 @@ char **pathParse(env *envList)
 	if (pathList == NULL)
 		return (NULL);
 
-	tokenizedPath = strtok(pathValue, ":");
+	tokenizedPath = strtok(pathValue, delim);
 	while (tokenizedPath != NULL)
 	{
 		pathList[i] = strdup(tokenizedPath);
 		i++;
-		tokenizedPath = strtok(NULL, ":");
+		tokenizedPath = strtok(NULL, delim);
 	}
 	pathList[i] = NULL;
 	return (pathList);
 }
 
+/**
+* addEnv - adds an environ variable to the environ list
+* @head: environ list
+* @env_var: environ variable to be added
+* Return - returns the endnode
+*/
 int getExecutablePath(char *cmd)
 {
 	int result;

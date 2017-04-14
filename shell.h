@@ -8,6 +8,9 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #define BUFFSIZE 1024
+#include <sys/types.h>
+#include <sys/wait.h>
+
 extern char **environ;
 
 /**

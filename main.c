@@ -11,17 +11,14 @@ void excute(char **tokens, char *cmdPath)
 {
 	pid_t pid;
 	int status;
-	char *envp;
 
 	pid = fork();
 	if (pid == -1)
 	{
  		printf("Forking Error\n");
-	//	exit(NULL);
 	}
 	if (pid == 0)
 	{
-		envp = NULL;
 		if (execve(cmdPath, tokens, NULL) == -1)
 		{
 		  printf("No such file or directory\n");
@@ -40,7 +37,7 @@ void excute(char **tokens, char *cmdPath)
 */
 char **parseCommand(char *cmd)
 {
-	int buffsize = BUFFSIZE, i = 0;
+	int i = 0;
 	char **tokens = malloc(64 * sizeof(char *)), *token;
 
 	if (!tokens)
@@ -64,16 +61,15 @@ void printPrompt()
 {
 	char **temp = NULL;
 	env *head = NULL;
-	size_t n1;
 	struct stat interac;
-	char *cmd, **tokenizedArray;
+	char *t, *cmd, **tokenizedArray;
 	int readStatus = 0, NonInteracFlag;
-	size_t n;
+	size_t n, n1;
 
 	int i = 0; char *tempStr1 = NULL;
 	if (fstat(STDIN_FILENO, &interac) == -1)
 	{
-		perror("interactive error");
+		perror("fstat error:\n");
 		exit(EXIT_FAILURE);
 	}
 	switch (interac.st_mode & S_IFMT)
@@ -86,16 +82,21 @@ void printPrompt()
 		printf("myShell$ ");
 
 	n1 = create_env_list(&head);
+	if (!n1)
+		perror("env variables not created\n");
 	n1 = print_env_list(head);
-	char *t = _getenv(head, "PATH");
+	if (!n1)
+		perror("env variables not printed\n");
+	t = _getenv(head, "PATH");
+	if (!t)
+		perror("cannot retrieve path directories\n");
 	temp = pathParse(head);
-
-	while(readStatus = getline(&cmd,&n, stdin )!= EOF)
+	while((readStatus = getline(&cmd, &n, stdin ))!= EOF)
 	{
 		if (!readStatus)
 		{
-			printf("Error in reading the command\n");
-			break;
+			perror("Error in reading the command\n");
+			exit(-1);
 		}
 		tokenizedArray = parseCommand(cmd);
 		while (temp[i])
