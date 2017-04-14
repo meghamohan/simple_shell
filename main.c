@@ -4,9 +4,10 @@
 /**
 * excute - executes the parent and child process
 * @tokens : tokenized array of commands
+* @cmdPath : command with the complete path
 * Return - nothing
 */
-void excute(char **tokens)
+void excute(char **tokens, char *cmdPath)
 {
 	pid_t pid;
 	int status;
@@ -21,7 +22,7 @@ void excute(char **tokens)
 	if (pid == 0)
 	{
 		envp = NULL;
-		if (execve(tokens[0], tokens, NULL) == -1)
+		if (execve(cmdPath, tokens, NULL) == -1)
 		{
 		  printf("No such file or directory\n");
 	        }
@@ -61,11 +62,23 @@ char **parseCommand(char *cmd)
 */	
 void printPrompt()
 {
+	char **temp = NULL;
+	env *head = NULL;
+	size_t n1;
+
 	char *cmd, **tokenizedArray;
 	int readStatus = 0;
 	size_t n;
 
+	int i = 0; char *tempStr1 = NULL;
+
 	printf("myShell$ ");
+
+	n1 = create_env_list(&head);
+	n1 = print_env_list(head);
+	char *t = _getenv(head, "PATH");
+	temp = pathParse(head);
+
 	while(readStatus = getline(&cmd,&n, stdin )!= EOF)
 	{
 		if (!readStatus)
@@ -74,7 +87,22 @@ void printPrompt()
 			break;
 		}
 		tokenizedArray = parseCommand(cmd);
-		excute(tokenizedArray);
+		while (temp[i])
+		{
+			tempStr1 = str_concat(temp[i], "/");
+			tempStr1 = str_concat(tempStr1, tokenizedArray[0]);
+			if (getExecutablePath(tempStr1))
+			{
+				excute(tokenizedArray, tempStr1);
+			}
+			else
+				printf("checkforbuiltins\n");
+			i++;
+		}		
+		i = 0;
+
+
+	//	excute(tokenizedArray);
 		printf("myShell$ ");
 	}
 

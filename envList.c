@@ -47,7 +47,7 @@ size_t print_env_list(env *h)
 		printf("error\n");
 	while (h != NULL)
 	{
-		printf("key: %s, value: %s\n",h->key,h->value);
+//		printf("key: %s, value: %s\n",h->key,h->value);
 		n++;
 		h = (h)->next;
 	}
@@ -106,6 +106,8 @@ for readable, writeable, executable */
 	else
 		return (0);
 }
+
+/*
 void main()
 {
 	char **temp = NULL;
@@ -132,4 +134,4 @@ void main()
 		i++;
 	}
 }
-
+*/
