@@ -38,10 +38,13 @@ void excute(char **tokens, char *cmdPath)
 char **parseCommand(char *cmd)
 {
 	int i = 0;
-	char **tokens = malloc(64 * sizeof(char *)), *token;
+	char **tokens = malloc(32 * sizeof(char *)), *token;
 
 	if (!tokens)
-		printf("not possible to allocate memory\n");
+	{
+		perror("not possible to allocate memory\n");
+		return (NULL);
+	}
 	token = strtok(cmd," \t\n");
 	while (token != NULL)
 	{
@@ -84,12 +87,10 @@ void printPrompt()
 	n1 = create_env_list(&head);
 	if (!n1)
 		perror("env variables not created\n");
-	n1 = print_env_list(head);
-	if (!n1)
-		perror("env variables not printed\n");
 	t = _getenv(head, "PATH");
 	if (!t)
 		perror("cannot retrieve path directories\n");
+	
 	temp = pathParse(head);
 	while((readStatus = getline(&cmd, &n, stdin ))!= EOF)
 	{
@@ -121,11 +122,11 @@ void printPrompt()
 			i++;
 		}		
 		i = 0;
-
 		if (NonInteracFlag == 0)
 			printf("myShell$ ");
 	}
-
+	free(cmd);
+	free(temp);
 }
 /**
 * main - the main entry point of shell program
