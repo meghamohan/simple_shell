@@ -65,14 +65,25 @@ void printPrompt()
 	char **temp = NULL;
 	env *head = NULL;
 	size_t n1;
-
+	struct stat interac;
 	char *cmd, **tokenizedArray;
-	int readStatus = 0;
+	int readStatus = 0, NonInteracFlag;
 	size_t n;
 
 	int i = 0; char *tempStr1 = NULL;
-
-	printf("myShell$ ");
+	if (fstat(STDIN_FILENO, &interac) == -1)
+	{
+		perror("interactive error");
+		exit(EXIT_FAILURE);
+	}
+	switch (interac.st_mode & S_IFMT)
+	{
+	case S_IFIFO:
+		NonInteracFlag = 1;
+		break;
+	}
+	if (NonInteracFlag == 0)
+		printf("myShell$ ");
 
 	n1 = create_env_list(&head);
 	n1 = print_env_list(head);
@@ -89,21 +100,29 @@ void printPrompt()
 		tokenizedArray = parseCommand(cmd);
 		while (temp[i])
 		{
-			tempStr1 = str_concat(temp[i], "/");
-			tempStr1 = str_concat(tempStr1, tokenizedArray[0]);
-			if (getExecutablePath(tempStr1))
+			if (getExecutablePath(tokenizedArray[0]))
 			{
-				excute(tokenizedArray, tempStr1);
+				excute(tokenizedArray, tokenizedArray[0]);
+				break;
 			}
 			else
-				printf("checkforbuiltins\n");
+			{
+				tempStr1 = str_concat(temp[i], "/");
+				tempStr1 = str_concat(tempStr1, tokenizedArray[0]);
+				if (getExecutablePath(tempStr1))
+				{
+					excute(tokenizedArray, tempStr1);
+					break;
+				}
+				else
+					printf("checkforbuiltins\n");
+			}
 			i++;
 		}		
 		i = 0;
 
-
-	//	excute(tokenizedArray);
-		printf("myShell$ ");
+		if (NonInteracFlag == 0)
+			printf("myShell$ ");
 	}
 
 }
