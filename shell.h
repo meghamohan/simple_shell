@@ -14,7 +14,7 @@
 extern char **environ;
 
 /**
-envVar - struct for a single env var
+* envVar - struct for a single env var
 */
 typedef struct envNode
 {
@@ -22,14 +22,14 @@ typedef struct envNode
 	char *value;
 	struct envNode *next;
 }env;
-
 /**
-*shell -struct of all structs needed to load shell
-*/
-typedef struct shellList
+* struct for builtin function
+**/
+typedef struct builtinStruct
 {
-	env *envList1;
-}shellType;
+	char * cmd;
+	int (*f)();
+} builtinFunc;
 
 /* function prototypes */
 char *str_concat(char *s1, char *s2);

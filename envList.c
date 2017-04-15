@@ -26,6 +26,7 @@ env *addEnv(env **head, char *env_var)
 	while (temp->next != NULL)
 		temp = temp->next;
 	temp->next = endNode;
+
 	return (endNode);
 }
 
@@ -37,37 +38,14 @@ env *addEnv(env **head, char *env_var)
 int create_env_list(env **head)
 {
 	size_t i;
-	i = 0;
 
+	i = 0;
 	while (environ[i] != NULL)
 	{
 		addEnv(head, environ[i]);
 		i++;
 	}
 	return (i);
-}
-
-/**
-* print_env_list - prints the environ list
-* @h: environ list to be printed
-* Return - returns the number of variables printed
-*/
-size_t print_env_list(env *h)
-{
-
-	unsigned int n;
-
-	n = 0;
-	if (!h)
-		printf("error\n");
-	while (h != NULL)
-	{
-		n++;
-		h = (h)->next;
-	}
-
-	return (n);
-
 }
 
 /**
@@ -81,7 +59,7 @@ char *_getenv(env *envVars, const char *name)
 	env *temp;
 
 	temp = envVars;
-	while(temp != NULL)
+	while (temp != NULL)
 	{
 		if (strcmp(temp->key, name) == 0)
 			return (temp->value);
@@ -91,10 +69,9 @@ char *_getenv(env *envVars, const char *name)
 }
 
 /**
-* pathParse - parses each directory from the 
-* @head: environ list
-* @env_var: environ variable to be added
-* Return - returns the endnode
+* pathParse - parses each directory from the PATH dir string
+* @envList: env variable linked list
+* Return - returns the string array of path dirs
 */
 char **pathParse(env *envList)
 {
@@ -121,49 +98,22 @@ char **pathParse(env *envList)
 }
 
 /**
-* addEnv - adds an environ variable to the environ list
-* @head: environ list
-* @env_var: environ variable to be added
-* Return - returns the endnode
+* getExecutablePath - checks if the given file is present
+* in the attached path or not
+* @cmd: command with the path
+* Return - returns 1 if present 0 if not
 */
 int getExecutablePath(char *cmd)
 {
 	int result;
-	
-	result = access (cmd, F_OK); 
-/* F_OK tests existence also (R_OK,W_OK,X_OK)
-for readable, writeable, executable */
-	if ( result == 0 )
+
+	result = access(cmd, F_OK);
+/**
+* F_OK tests existence also (R_OK,W_OK,X_OK)
+*for readable, writeable, executable
+*/
+	if (result == 0)
 		return (1);
 	else
 		return (0);
 }
-
-/*
-void main()
-{
-	char **temp = NULL;
-	env *head = NULL;
-	size_t n;
-
-	n = create_env_list(&head);
-	n = print_env_list(head);
-	char *t = _getenv(head, "PATH");	
-	printf("this is path %s\n", t);
-	temp = pathParse(head);
-	int i = 0; char *tempStr1 = NULL, *tempStr2 = NULL;;
-	printf("PRINTING ALL PATH DIRS\n");
-	while (temp[i])
-	{
-		printf("%s\n",temp[i]);
-		tempStr1 = str_concat(temp[i], "/");
-		tempStr1 = str_concat(tempStr1, "ls");
-		printf("%s\n",tempStr1);
-		if (getExecutablePath(tempStr1))
-			printf("doExcve\n");
-		else
-			printf("checkforbuiltins\n");
-		i++;
-	}
-}
-*/

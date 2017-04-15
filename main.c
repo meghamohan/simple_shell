@@ -15,14 +15,14 @@ void excute(char **tokens, char *cmdPath)
 	pid = fork();
 	if (pid == -1)
 	{
- 		printf("Forking Error\n");
+		printf("Forking Error\n");
 	}
 	if (pid == 0)
 	{
-		if (execve(cmdPath, tokens, NULL) == -1)
+		if (execve (cmdPath, tokens, NULL) == -1)
 		{
 		  printf("No such file or directory\n");
-	        }
+		}
 	}
 	else
 		waitpid(pid, &status, 0);
@@ -45,11 +45,11 @@ char **parseCommand(char *cmd)
 		perror("not possible to allocate memory\n");
 		return (NULL);
 	}
-	token = strtok(cmd," \t\n");
+	token = strtok(cmd, " \t\n");
 	while (token != NULL)
 	{
-   		tokens[i] = token;
-    		i++;
+		tokens[i] = token;
+		i++;
 		token = strtok(NULL, " \t\n");
 	}
 	tokens[i] = NULL;
@@ -59,8 +59,9 @@ char **parseCommand(char *cmd)
 /**
 * printPrompt - prints prompt, gets a line containing command
 * parses it and executes it by calling system call execve
-*/	
-void printPrompt()
+*/
+
+void printPrompt(void)
 {
 	char **temp = NULL;
 	env *head = NULL;
@@ -70,7 +71,7 @@ void printPrompt()
 	size_t n, n1;
 
 	int i = 0; char *tempStr1 = NULL;
-	if (fstat(STDIN_FILENO, &interac) == -1)
+	if (fstat (STDIN_FILENO, &interac) == -1)
 	{
 		perror("fstat error:\n");
 		exit(EXIT_FAILURE);
@@ -90,14 +91,14 @@ void printPrompt()
 	t = _getenv(head, "PATH");
 	if (!t)
 		perror("cannot retrieve path directories\n");
-	
+
 	temp = pathParse(head);
-	while((readStatus = getline(&cmd, &n, stdin ))!= EOF)
+	while ((readStatus = getline(&cmd, &n, stdin)) != EOF)
 	{
 		if (!readStatus)
 		{
 			perror("Error in reading the command\n");
-			exit(-1);
+			exit(1);
 		}
 		tokenizedArray = parseCommand(cmd);
 		while (temp[i])
@@ -120,19 +121,20 @@ void printPrompt()
 					printf("checkforbuiltins\n");
 			}
 			i++;
-		}		
+		}
 		i = 0;
 		if (NonInteracFlag == 0)
 			printf("myShell$ ");
 	}
 	free(cmd);
 	free(temp);
+	free(head);
 }
 /**
 * main - the main entry point of shell program
 * return - always 0
 */
-int main( )
+int main(void)
 {
 	printPrompt();
 	return (0);
