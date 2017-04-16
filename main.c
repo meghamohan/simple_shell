@@ -36,10 +36,10 @@ void excute(char **tokens, char *cmdPath)
 * @cmd : the command that is read using readline command
 * Return: returns a string array of the tokenized strings
 */
-char **parseCommand(char *cmd)
+char **parseCommand(char *cmd, char **tokens)
 {
 	int i = 0;
-	char **tokens = malloc(32 * sizeof(char *)), *token;
+	char *token;
 
 	if (!tokens)
 	{
@@ -54,9 +54,45 @@ char **parseCommand(char *cmd)
 		token = strtok(NULL, " \t\n");
 	}
 	tokens[i] = NULL;
+	free(token);
 	return (tokens);
 }
 
+/**
+* initializeMyShell - creates env list, parses path
+* and checks for interactive/noninteractive shell
+* head: head lined list to where env list is stored
+* interac: interactive shell
+* Return: nothing
+*/
+void intializeMyShell(struct stat interac, int NonInteracFlag, env *head, char **temp)
+{
+	char *t;
+	size_t n1;
+
+	if ((fstat(STDIN_FILENO, &interac)) == -1)
+	{
+		perror("fstat error:\n");
+		exit(EXIT_FAILURE);
+	}
+	switch (interac.st_mode & S_IFMT)
+	{
+	case S_IFIFO:
+		NonInteracFlag = 1;
+		break;
+	}
+	if (NonInteracFlag == 0)
+		writeIt();
+
+	n1 = create_env_list(&head);
+	if (!n1)
+		perror("env variables not created\n");
+	t = _getenv(head, "PATH");
+	if (!t)
+		perror("cannot retrieve path directories\n");
+
+	temp = pathParse(head);
+}
 /**
 * printPrompt - prints prompt, gets a line containing command
 * parses it and executes it by calling system call execve
@@ -71,8 +107,10 @@ void printPrompt(void)
 	int readStatus = 0, NonInteracFlag;
 	size_t n, n1;
 
+	tokenizedArray = malloc(32 * sizeof(char *));
 	int i = 0; char *tempStr1 = NULL;
 
+//	initializeMyShell(&interac, &NonInteracFlag, &head, temp);
 	if ((fstat(STDIN_FILENO, &interac)) == -1)
 	{
 		perror("fstat error:\n");
@@ -109,7 +147,7 @@ void printPrompt(void)
 			writeIt();
 			continue;
 		}
-		tokenizedArray = parseCommand(cmd);
+		parseCommand(cmd, tokenizedArray);
 		while (temp[i])
 		{
 			if (getExecutablePath(tokenizedArray[0]))
@@ -138,6 +176,7 @@ void printPrompt(void)
 	free(cmd);
 	free(temp);
 	free(head);
+	free(tokenizedArray);
 }
 /**
 * main - the main entry point of shell program
