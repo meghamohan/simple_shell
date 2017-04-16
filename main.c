@@ -1,5 +1,6 @@
 #include "shell.h"
 #include <string.h>
+#define PROMPT "myShell$ "
 
 /**
 * excute - executes the parent and child process
@@ -15,13 +16,13 @@ void excute(char **tokens, char *cmdPath)
 	pid = fork();
 	if (pid == -1)
 	{
-		printf("Forking Error\n");
+		perror("Forking Error\n");
 	}
 	if (pid == 0)
 	{
-		if (execve (cmdPath, tokens, NULL) == -1)
+		if ((execve(cmdPath, tokens, NULL)) == -1)
 		{
-		  printf("No such file or directory\n");
+		  perror("No such file or directory\n");
 		}
 	}
 	else
@@ -33,7 +34,7 @@ void excute(char **tokens, char *cmdPath)
 * parseCommand - tokenizes the commandline that is read from
 * the terminal
 * @cmd : the command that is read using readline command
-* Return - returns a string array of the tokenized strings
+* Return: returns a string array of the tokenized strings
 */
 char **parseCommand(char *cmd)
 {
@@ -71,7 +72,8 @@ void printPrompt(void)
 	size_t n, n1;
 
 	int i = 0; char *tempStr1 = NULL;
-	if (fstat (STDIN_FILENO, &interac) == -1)
+
+	if ((fstat(STDIN_FILENO, &interac)) == -1)
 	{
 		perror("fstat error:\n");
 		exit(EXIT_FAILURE);
@@ -83,7 +85,7 @@ void printPrompt(void)
 		break;
 	}
 	if (NonInteracFlag == 0)
-		printf("myShell$ ");
+		writeIt();
 
 	n1 = create_env_list(&head);
 	if (!n1)
@@ -99,6 +101,13 @@ void printPrompt(void)
 		{
 			perror("Error in reading the command\n");
 			exit(1);
+		}
+		if(_strcmp(cmd, "exit") == 0)
+			break;
+		if (_strcmp(cmd, "\n") == 0)
+		{
+			writeIt();
+			continue;
 		}
 		tokenizedArray = parseCommand(cmd);
 		while (temp[i])
@@ -117,14 +126,14 @@ void printPrompt(void)
 					excute(tokenizedArray, tempStr1);
 					break;
 				}
-				else
-					printf("checkforbuiltins\n");
+			//	else
+			//		printf("checkforbuiltins\n");
 			}
 			i++;
 		}
 		i = 0;
 		if (NonInteracFlag == 0)
-			printf("myShell$ ");
+			writeIt();
 	}
 	free(cmd);
 	free(temp);
@@ -132,7 +141,7 @@ void printPrompt(void)
 }
 /**
 * main - the main entry point of shell program
-* return - always 0
+* Return: always 0
 */
 int main(void)
 {

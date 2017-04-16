@@ -10,7 +10,7 @@
 #define BUFFSIZE 1024
 #include <sys/types.h>
 #include <sys/wait.h>
-
+#define PROMPT "myShell$ "
 extern char **environ;
 
 /**
@@ -45,5 +45,6 @@ char *_getenv(env *envVars, const char *name);
 char **pathParse(env *envList);
 int getExecutablePath(char *cmd);
 
+int writeIt(void);
 #endif
 

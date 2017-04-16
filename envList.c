@@ -3,7 +3,7 @@
 * addEnv - adds an environ variable to the environ list
 * @head: environ list
 * @env_var: environ variable to be added
-* Return - returns the endnode
+* Return: returns the endnode
 */
 env *addEnv(env **head, char *env_var)
 {
@@ -31,9 +31,9 @@ env *addEnv(env **head, char *env_var)
 }
 
 /**
-* creat_env_list - creates a list of environ variables
+* create_env_list - creates a list of environ variables
 * @head: list to where it has to be added
-* Return - returns the number of environ variables
+* Return: returns the number of environ variables
 */
 int create_env_list(env **head)
 {
@@ -52,7 +52,7 @@ int create_env_list(env **head)
 * _getenv - gets the value of a specific environ variable
 * @envVars: environ list where the search has to be done
 * @name: environ variable name
-* Return - returns the value of environ
+* Return: returns the value of environ
 */
 char *_getenv(env *envVars, const char *name)
 {
@@ -71,7 +71,7 @@ char *_getenv(env *envVars, const char *name)
 /**
 * pathParse - parses each directory from the PATH dir string
 * @envList: env variable linked list
-* Return - returns the string array of path dirs
+* Return: returns the string array of path dirs
 */
 char **pathParse(env *envList)
 {
@@ -101,16 +101,16 @@ char **pathParse(env *envList)
 * getExecutablePath - checks if the given file is present
 * in the attached path or not
 * @cmd: command with the path
-* Return - returns 1 if present 0 if not
+* Return: returns 1 if present 0 if not
 */
 int getExecutablePath(char *cmd)
 {
 	int result;
 
 	result = access(cmd, F_OK);
-/**
+/*
 * F_OK tests existence also (R_OK,W_OK,X_OK)
-*for readable, writeable, executable
+* for readable, writeable, executable
 */
 	if (result == 0)
 		return (1);
