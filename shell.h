@@ -46,5 +46,7 @@ char **pathParse(env *envList);
 int getExecutablePath(char *cmd);
 
 int writeIt(void);
+void freeEnvironList(env **envList);
+void freeStringArray(char **strArray);
 #endif
 

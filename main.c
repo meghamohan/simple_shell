@@ -12,6 +12,7 @@ void excute(char **tokens, char *cmdPath)
 {
 	pid_t pid;
 	int status;
+	char **envp = environ;
 
 	pid = fork();
 	if (pid == -1)
@@ -20,7 +21,8 @@ void excute(char **tokens, char *cmdPath)
 	}
 	if (pid == 0)
 	{
-		if ((execve(cmdPath, tokens, NULL)) == -1)
+		printf("MY PATH = %s\n",cmdPath);
+		if ((execve(cmdPath, tokens, envp)) == -1)
 		{
 		  perror("No such file or directory\n");
 		}
@@ -59,79 +61,18 @@ char **parseCommand(char *cmd, char **tokens)
 }
 
 /**
-* initializeMyShell - creates env list, parses path
-* and checks for interactive/noninteractive shell
-* head: head lined list to where env list is stored
-* interac: interactive shell
-* Return: nothing
-*/
-void intializeMyShell(struct stat interac, int NonInteracFlag, env *head, char **temp)
-{
-	char *t;
-	size_t n1;
-
-	if ((fstat(STDIN_FILENO, &interac)) == -1)
-	{
-		perror("fstat error:\n");
-		exit(EXIT_FAILURE);
-	}
-	switch (interac.st_mode & S_IFMT)
-	{
-	case S_IFIFO:
-		NonInteracFlag = 1;
-		break;
-	}
-	if (NonInteracFlag == 0)
-		writeIt();
-
-	n1 = create_env_list(&head);
-	if (!n1)
-		perror("env variables not created\n");
-	t = _getenv(head, "PATH");
-	if (!t)
-		perror("cannot retrieve path directories\n");
-
-	temp = pathParse(head);
-}
-/**
 * printPrompt - prints prompt, gets a line containing command
 * parses it and executes it by calling system call execve
 */
 
-void printPrompt(void)
+void printPrompt(env *head, int InteracFlag)
 {
 	char **temp = NULL;
-	env *head = NULL;
-	struct stat interac;
-	char *t, *cmd, **tokenizedArray;
-	int readStatus = 0, NonInteracFlag;
-	size_t n, n1;
+	char *cmd = NULL, **tokenizedArray, *tempStr1 = NULL;
+	int i = 0, readStatus = 0;
+	size_t n;
 
 	tokenizedArray = malloc(32 * sizeof(char *));
-	int i = 0; char *tempStr1 = NULL;
-
-//	initializeMyShell(&interac, &NonInteracFlag, &head, temp);
-	if ((fstat(STDIN_FILENO, &interac)) == -1)
-	{
-		perror("fstat error:\n");
-		exit(EXIT_FAILURE);
-	}
-	switch (interac.st_mode & S_IFMT)
-	{
-	case S_IFIFO:
-		NonInteracFlag = 1;
-		break;
-	}
-	if (NonInteracFlag == 0)
-		writeIt();
-
-	n1 = create_env_list(&head);
-	if (!n1)
-		perror("env variables not created\n");
-	t = _getenv(head, "PATH");
-	if (!t)
-		perror("cannot retrieve path directories\n");
-
 	temp = pathParse(head);
 	while ((readStatus = getline(&cmd, &n, stdin)) != EOF)
 	{
@@ -164,19 +105,14 @@ void printPrompt(void)
 					excute(tokenizedArray, tempStr1);
 					break;
 				}
-			//	else
-			//		printf("checkforbuiltins\n");
 			}
 			i++;
 		}
 		i = 0;
-		if (NonInteracFlag == 0)
+		if (InteracFlag)
 			writeIt();
 	}
-	free(cmd);
-	free(temp);
-	free(head);
-	free(tokenizedArray);
+
 }
 /**
 * main - the main entry point of shell program
@@ -184,6 +120,25 @@ void printPrompt(void)
 */
 int main(void)
 {
-	printPrompt();
+	env *head = NULL;
+	struct stat interac;
+	int InteracFlag = 0, n1;
+	char *t;
+	
+	fstat(STDIN_FILENO, &interac);
+
+	if (S_ISCHR(interac.st_mode))
+	{
+		writeIt();
+		InteracFlag = 1;
+	}
+	n1 = create_env_list(&head);
+	if (!n1)
+		perror("env variables not created\n");
+	t = _getenv(head, "PATH");
+	if (!t)
+		perror("No such file or directory\n");
+
+	printPrompt(head, InteracFlag);
 	return (0);
 }

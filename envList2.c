@@ -12,7 +12,7 @@ size_t print_env_list(env *h)
 
 	n = 0;
 	if (!h)
-		printf("error\n");
+		perror("error\n");
 	while (h != NULL)
 	{
 		n++;
