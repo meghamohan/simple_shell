@@ -1,6 +1,5 @@
 #include "shell.h"
 #include <string.h>
-#define PROMPT "myShell$ "
 
 /**
 * excute - executes the parent and child process
@@ -65,8 +64,7 @@ char **parseCommand(char *cmd, char **tokens)
 
 void printPrompt(env *head, int InteracFlag)
 {
-	char **temp = NULL;
-	char *cmd = NULL, **tokenizedArray, *tempStr1 = NULL;
+	char **temp = NULL, *cmd = NULL, **tokenizedArray, *tempStr1 = NULL;
 	int i = 0, readStatus = 0;
 	size_t n;
 
@@ -83,7 +81,7 @@ void printPrompt(env *head, int InteracFlag)
 			break;
 		if (_strcmp(cmd, "\n") == 0)
 		{
-			writeIt();
+			writePrompt();
 			continue;
 		}
 		parseCommand(cmd, tokenizedArray);
@@ -110,10 +108,12 @@ void printPrompt(env *head, int InteracFlag)
 		}
 		i = 0;
 		if (InteracFlag)
-			writeIt();
+			writePrompt();
 	}
 	freeStringArray(temp);
+	free(cmd);
 }
+
 /**
 * main - the main entry point of shell program
 * Return: always 0
@@ -128,7 +128,7 @@ int main(void)
 
 	if (S_ISCHR(interac.st_mode))
 	{
-		writeIt();
+		writePrompt();
 		InteracFlag = 1;
 	}
 	n1 = create_env_list(&head);
