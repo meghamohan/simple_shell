@@ -12,8 +12,8 @@ void excute(char **tokens, char *cmdPath)
 {
 	pid_t pid;
 	int status;
-	char **envp = environ;
-
+/*	extern char **environ;
+*/
 	pid = fork();
 	if (pid == -1)
 	{
@@ -21,14 +21,14 @@ void excute(char **tokens, char *cmdPath)
 	}
 	if (pid == 0)
 	{
-		printf("MY PATH = %s\n",cmdPath);
-		if ((execve(cmdPath, tokens, envp)) == -1)
+		printf("MY PATH = %s\n",environ[0]);
+		if ((execve(cmdPath, tokens, environ)) == -1)
 		{
 		  perror("No such file or directory\n");
 		}
 	}
 	else
-		waitpid(pid, &status, 0);
+		waitpid(-1, &status, 0);
 }
 
 
@@ -113,6 +113,10 @@ void printPrompt(env *head, int InteracFlag)
 			writeIt();
 	}
 
+/*	freeStringArray(tokenizedArray);
+	freeStringArray(temp);
+	free(cmd);
+	free(tempStr1);*/
 }
 /**
 * main - the main entry point of shell program
@@ -124,7 +128,6 @@ int main(void)
 	struct stat interac;
 	int InteracFlag = 0, n1;
 	char *t;
-	
 	fstat(STDIN_FILENO, &interac);
 
 	if (S_ISCHR(interac.st_mode))

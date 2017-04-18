@@ -8,13 +8,14 @@
 env *addEnv(env **head, char *env_var)
 {
 	env *endNode, *temp;
+	char *env_dup = _strdup(env_var);
 
 	if (env_var == NULL)
 		return (NULL);
 	endNode = (env *)malloc(sizeof(env));
 	if (endNode == NULL)
 		return (NULL);
-	endNode->key = strtok(env_var, "=");
+	endNode->key = strtok(env_dup, "=");
 	endNode->value = strtok(NULL, "\0");
 	endNode->next = NULL;
 	if (*head == NULL)

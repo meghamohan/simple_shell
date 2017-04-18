@@ -11,8 +11,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #define PROMPT "myShell$ "
-extern char **environ;
 
+extern char **environ;
 /**
 * envVar - struct for a single env var
 */
@@ -46,7 +46,7 @@ char **pathParse(env *envList);
 int getExecutablePath(char *cmd);
 
 int writeIt(void);
-void freeEnvironList(env **envList);
+void freeEnvironList(env *envList);
 void freeStringArray(char **strArray);
 #endif
 
