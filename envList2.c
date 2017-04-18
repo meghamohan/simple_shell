@@ -5,21 +5,21 @@
 * @h: environ list to be printed
 * Return - returns the number of variables printed
 */
-size_t print_env_list(env *h)
+int print_env_list(env *h, __attribute__((unused))char** cmds)
 {
-
 	unsigned int n;
 
 	n = 0;
 	if (!h)
+	{
 		perror("error\n");
+		return(0);
+	}
 	while (h != NULL)
 	{
 		n++;
 		h = (h)->next;
 	}
-
-	return (n);
-
+	return (1);
 }
 

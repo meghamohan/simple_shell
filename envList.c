@@ -66,6 +66,8 @@ char *_getenv(env *envVars, const char *name)
 			return (temp->value);
 		temp = temp->next;
 	}
+	freeEnvironList(temp);
+
 	return (NULL);
 }
 
@@ -95,6 +97,7 @@ char **pathParse(env *envList)
 		tokenizedPath = strtok(NULL, delim);
 	}
 	pathList[i] = NULL;
+
 	return (pathList);
 }
 

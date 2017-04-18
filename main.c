@@ -12,8 +12,7 @@ void excute(char **tokens, char *cmdPath)
 {
 	pid_t pid;
 	int status;
-/*	extern char **environ;
-*/
+	
 	pid = fork();
 	if (pid == -1)
 	{
@@ -21,7 +20,6 @@ void excute(char **tokens, char *cmdPath)
 	}
 	if (pid == 0)
 	{
-		printf("MY PATH = %s\n",environ[0]);
 		if ((execve(cmdPath, tokens, environ)) == -1)
 		{
 		  perror("No such file or directory\n");
@@ -106,17 +104,15 @@ void printPrompt(env *head, int InteracFlag)
 					break;
 				}
 			}
+		/*	if (getMyBuiltins(head, tokenizedArray))
+				break;*/
 			i++;
 		}
 		i = 0;
 		if (InteracFlag)
 			writeIt();
 	}
-
-/*	freeStringArray(tokenizedArray);
 	freeStringArray(temp);
-	free(cmd);
-	free(tempStr1);*/
 }
 /**
 * main - the main entry point of shell program
@@ -143,5 +139,6 @@ int main(void)
 		perror("No such file or directory\n");
 
 	printPrompt(head, InteracFlag);
+	freeEnvironList(head);
 	return (0);
 }

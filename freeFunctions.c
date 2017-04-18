@@ -1,19 +1,24 @@
 #include "shell.h"
 
-/*void freeEnvironList(env *envList)
+/**
+ *freeEnvironList - free the list
+ *@env1: head of the nodes or start of them
+ *Return: void
+ */
+void freeEnvironList(env *env1)
 {
-	env temp;
+	env *current;
 
-        while (*envList != NULL)
+	if (env1 == NULL)
+		return;
+
+	while (env1 != NULL)
 	{
-		temp = envList;
-		envList = temp->next;
-		free(temp->key);
-		free(temp->value);
-		free(temp);
+		current = env1;
+		env1 = env1->next;
+		free(current);
 	}
-	free(envList);
-}*/
+}
 
 void freeStringArray(char **strArray)
 {
