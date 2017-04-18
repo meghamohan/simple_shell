@@ -103,11 +103,11 @@ void printPrompt(env *head, int InteracFlag)
 					excute(tokenizedArray, tempStr1);
 					break;
 				}
-				else
+/*				else
 				{
 				      write(STDOUT_FILENO, "Command does not exist\n", 24);
 				      break;
-				}
+				      } */
 			}
 		/*	if (getMyBuiltins(head, tokenizedArray))
 				break;*/
