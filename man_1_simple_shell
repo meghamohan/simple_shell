@@ -1,0 +1,48 @@
+.TH man 3 "14 April 2017" "0.01" "shell man page"
+.SH NAME
+.B simple_shell
+- simple command interpreter
+.SH SYNOPSIS
+simple_shell [command]...
+
+.SH DESCRIPTION
+.B simple_shell
+is a simples version of a command line interpretor for the system
+
+.SH OVERVIEW
+Simple_shell is executing commands read from a terminal, interprets them and executes the command.
+
+.SH INVOCATIONLS
+
+The simple_shell is initiated by using ./simple_shell
+
+.SH SIMPLE COMMANDS
+    A simple command is a sequance of non blank words separated by space or a tab. A first word specifies the name of the command. If a simple command has been recognized, the simple_shell will do following:
+    - the first word (command)is located and executed.
+    - remaining words are treated as arguments to the command
+
+.SH PROMPTING
+    When used interactively, the shell prompts with the value
+.I myShell$
+before reading a command.
+
+.SH ENVIRONMENT
+    The environment is a list of name-value pairs that is passed to an executed program. On invocation, the shell scans the environment and creates a parameter for each name found, giving it the corresponding value.
+
+
+.SH BUILTIN COMMANDS
+.B exit
+[n] - terminates the shell process with the exit status of n.
+
+.SH SEE ALSO
+    env(1), exec(2)
+
+.SH OPTIONS
+.B simple_shell
+does not take any options
+
+.SH BUGS
+Probably quite a few bugs.
+
+.SH AUTHOR
+Megha Mohan, Halina Veratsennik
