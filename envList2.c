@@ -3,17 +3,19 @@
 /**
 * print_env_list - prints the environ list
 * @h: environ list to be printed
-* Return - returns the number of variables printed
+* @cmds: pointer to array of commands
+* Return: returns the number of variables printed, 0 - otherwise
 */
-int print_env_list(env **h, __attribute__((unused))char** cmds)
+
+int print_env_list(env **h, __attribute__((unused))char **cmds)
 {
-	unsigned int n;env *temp = *h;
-	
-	n = 0;
+	unsigned int n;
+	env *temp = *h;
+
 	if (!temp)
 	{
 		perror("error\n");
-		return(0);
+		return (0);
 	}
 	while (temp != NULL)
 	{
@@ -21,19 +23,23 @@ int print_env_list(env **h, __attribute__((unused))char** cmds)
 		_putchar('=');
 		printString((temp)->value);
 		_putchar('\n');
-		n++;
 		temp = (temp)->next;
 	}
-	printf("count of envs: %d\n",n);
 	return (1);
 }
 
-int _setEnv(env **h, char** cmds)
+/**
+ * _setEnv - function to set a new env value
+ * @h: pointer to head
+ * @cmds: pointer to array or commands
+ * Return: 1
+ */
+
+int _setEnv(env **h, char **cmds)
 {
 	char *str;
 	env **tmp;
 
-/*	create_env_list(h);*/
 	str = str_concat(cmds[1], "=");
 	str = str_concat(str, cmds[2]);
 	tmp = h;
