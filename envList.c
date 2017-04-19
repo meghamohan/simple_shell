@@ -8,15 +8,15 @@
 env *addEnv(env **head, char *env_var)
 {
 	env *endNode, *temp;
-	char *env_dup = _strdup(env_var);
-
 	if (env_var == NULL)
 		return (NULL);
 	endNode = (env *)malloc(sizeof(env));
 	if (endNode == NULL)
 		return (NULL);
-	endNode->key = strtok(env_dup, "=");
+
+	endNode->key = strtok(env_var, "=");
 	endNode->value = strtok(NULL, "\0");
+	printf("changed value: %s\n",endNode->value);
 	endNode->next = NULL;
 	if (*head == NULL)
 	{
@@ -27,7 +27,6 @@ env *addEnv(env **head, char *env_var)
 	while (temp->next != NULL)
 		temp = temp->next;
 	temp->next = endNode;
-
 	return (endNode);
 }
 
@@ -38,14 +37,17 @@ env *addEnv(env **head, char *env_var)
 */
 int create_env_list(env **head)
 {
-	size_t i;
-
+	size_t i; char *env_dup;
 	i = 0;
 	while (environ[i] != NULL)
 	{
-		addEnv(head, environ[i]);
+		printf("actual: %s\n",environ[i]);
+		env_dup = _strdup(environ[i]);
+		addEnv(head, env_dup);
 		i++;
 	}
+	printf("count of actual envs =%d\n",(int)i);
+	free(env_dup);
 	return (i);
 }
 
@@ -79,17 +81,17 @@ char *_getenv(env *envVars, const char *name)
 char **pathParse(env *envList)
 {
 	char **pathList;
-	char *pathValue, *tokenizedPath;
+	char *pathValue, *pathValue2, *tokenizedPath;
 	char *delim = ":";
 	int i = 0;
 
 	pathValue = _getenv(envList, "PATH");
-
+	pathValue2 = _strdup(pathValue);
 	pathList = malloc(sizeof(char *) * 32);
 	if (pathList == NULL)
 		return (NULL);
 
-	tokenizedPath = strtok(pathValue, delim);
+	tokenizedPath = strtok(pathValue2, delim);
 	while (tokenizedPath != NULL)
 	{
 		pathList[i] = strdup(tokenizedPath);
@@ -98,6 +100,7 @@ char **pathParse(env *envList)
 	}
 	pathList[i] = NULL;
 
+	free(pathValue2);
 	return (pathList);
 }
 

@@ -65,18 +65,26 @@ char **parseCommand(char *cmd, char **tokens)
 
 void printPrompt(env *head, int InteracFlag)
 {
+<<<<<<< HEAD
+	char **pathDirs = NULL, *cmd = NULL, **tokenizedArray, *cmdPath = NULL;
+	int i, handled, readStatus = 0;
+=======
 	char **temp = NULL;
 	char *cmd = NULL, **tokenizedArray, *tempStr1 = NULL;
 	int i = 0, readStatus = 0;
+>>>>>>> a6ff7c1b9ee1ff98d63bda238b061156de2a6171
 	size_t n;
-
+	pathDirs = pathParse(head);
 	tokenizedArray = malloc(32 * sizeof(char *));
-	temp = pathParse(head);
+
 	while ((readStatus = getline(&cmd, &n, stdin)) != EOF)
-	{
+	{	
+		i = handled = 0;
+
 		if (!readStatus)
 		{
 			perror("Error in reading the command\n");
+			freeStringArray(tokenizedArray);
 			exit(1);
 		}
 		if(_strcmp(cmd, "exit") == 0)
@@ -86,22 +94,33 @@ void printPrompt(env *head, int InteracFlag)
 			writeIt();
 			continue;
 		}
+	
+		/* Parse command in to tokenized array.*/	
 		parseCommand(cmd, tokenizedArray);
-		while (temp[i])
-		{
+		
+		/* Handle builtins */ 
+		handled = getMyBuiltins(&head, tokenizedArray);
+
+		/* Handle full path commands. */
+		if (!handled) {
 			if (getExecutablePath(tokenizedArray[0]))
 			{
+				/*cmdPath = tokenizedArray[0];*/
 				excute(tokenizedArray, tokenizedArray[0]);
-				break;
+				handled = 1;
 			}
-			else
-			{
-				tempStr1 = str_concat(temp[i], "/");
-				tempStr1 = str_concat(tempStr1, tokenizedArray[0]);
-				if (getExecutablePath(tempStr1))
+			else {
+				while (pathDirs[i])
 				{
-					excute(tokenizedArray, tempStr1);
-					break;
+					cmdPath = str_concat(pathDirs[i], "/");
+					cmdPath = str_concat(cmdPath, tokenizedArray[0]);
+					if (getExecutablePath(cmdPath))
+					{
+						excute(tokenizedArray, cmdPath);
+						handled = 1;
+						break;
+					}
+					i++;
 				}
 /*				else
 				{
@@ -109,16 +128,27 @@ void printPrompt(env *head, int InteracFlag)
 				      break;
 				      } */
 			}
-		/*	if (getMyBuiltins(head, tokenizedArray))
-				break;*/
-			i++;
 		}
-		i = 0;
+		if (!handled) {
+			perror("Command Not Found.\n");
+		}
+		
+		
+		/* Print prompt. */
 		if (InteracFlag)
 			writeIt();
 	}
+<<<<<<< HEAD
+	/*freeTokenizedArray(tokenizedArray);*/
+	freeStringArray(pathDirs);
+	free(cmd);
+}
+
+
+=======
 	freeStringArray(temp);
 }
+>>>>>>> a6ff7c1b9ee1ff98d63bda238b061156de2a6171
 /**
 * main - the main entry point of shell program
 * Return: always 0
@@ -142,7 +172,6 @@ int main(void)
 	t = _getenv(head, "PATH");
 	if (!t)
 		perror("No such file or directory\n");
-
 	printPrompt(head, InteracFlag);
 	freeEnvironList(head);
 	return (0);
