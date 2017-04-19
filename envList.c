@@ -16,7 +16,6 @@ env *addEnv(env **head, char *env_var)
 
 	endNode->key = strtok(env_var, "=");
 	endNode->value = strtok(NULL, "\0");
-	printf("changed value: %s\n",endNode->value);
 	endNode->next = NULL;
 	if (*head == NULL)
 	{

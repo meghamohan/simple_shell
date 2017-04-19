@@ -70,6 +70,7 @@ void printPrompt(env *head, int InteracFlag)
 	pathDirs = pathParse(head);
 	tokenizedArray = malloc(32 * sizeof(char *));
 
+	n = 0;
 	while ((readStatus = getline(&cmd, &n, stdin)) != EOF)
 	{	
 		i = handled = 0;
@@ -141,7 +142,7 @@ int main(void)
 	env *head = NULL;
 	struct stat interac;
 	int InteracFlag = 0, n1;
-	char *t;
+
 	fstat(STDIN_FILENO, &interac);
 
 	if (S_ISCHR(interac.st_mode))
@@ -152,9 +153,6 @@ int main(void)
 	n1 = create_env_list(&head);
 	if (!n1)
 		perror("env variables not created\n");
-	t = _getenv(head, "PATH");
-	if (!t)
-		perror("No such file or directory\n");
 	printPrompt(head, InteracFlag);
 	freeEnvironList(head);
 	return (0);
