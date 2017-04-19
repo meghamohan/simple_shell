@@ -27,7 +27,7 @@ typedef struct envNode
 **/
 typedef struct builtinStruct
 {
-	char * cmd;
+	char *cmd;
 	int (*f)();
 } builtinFunc;
 
@@ -38,7 +38,7 @@ char *_strdup(char *str);
 void _strcpy(char *dest,const char *src);
 int _strcmp(const char *s1,const char *s2);
 
-env * addEnv(env **head, char *env_var);
+env *addEnv(env **head, char *env_var);
 int create_env_list(env **head);
 char *_getenv(env *envVars, const char *name);
 char **pathParse(env *envList);
@@ -50,8 +50,10 @@ void printString(char *str);
 
 void freeEnvironList(env *envList);
 void freeStringArray(char **strArray);
+void freeTokenizedArray(char **strArray);
 
-int getMyBuiltins(env *h, char **cmds);
-int print_env_list(env *h, char** cmds);
+int getMyBuiltins(env **h, char **cmds);
+int print_env_list(env **h, char** cmds);
+int _setEnv(env **h, char** cmds);
 #endif
 

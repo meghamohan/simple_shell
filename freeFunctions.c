@@ -1,33 +1,54 @@
 #include "shell.h"
 
 /**
- *freeEnvironList - free the list
- *@env1: head of the nodes or start of them
+ *freeEnvironList - frees the list
+ *@env1: env1 of the nodes or start of them
  *Return: void
  */
-void freeEnvironList(env *env1)
+void freeEnvironList(env *head)
 {
-	env *current;
-
-	if (env1 == NULL)
+	if (head == NULL)
 		return;
+	if (head->next != NULL)
+		freeEnvironList(head->next);
+	free(head->key);
+	free(head);
 
-	while (env1 != NULL)
+	/*
+	for (; head != NULL; head = next_node)
 	{
-		current = env1;
-		env1 = env1->next;
-		free(current);
-	}
+		printf("Free env: %s, %s\n", head->key, head->value);
+		if (head->next != NULL) {
+			next_node = head->next;	
+			printf("Next node: %s, %s\n", next_node->key, next_node->value);
+		}
+		free(head->key);
+		free(head->value);
+		free(head);
+		printf("After free Next node: %s, %s\n", next_node->key, next_node->value);
+	}*/
+}
+
+void freeTokenizedArray(char **strArray)
+{
+	if (strArray == NULL)
+		return;
+	free(strArray[0]);
+	free(strArray);
 }
 
 void freeStringArray(char **strArray)
 {
 	int i = 0;
+	if (strArray == NULL)
+		return;
 
-	while (strArray[i] != NULL)
+	while (strArray[i])
 	{
 		free(strArray[i]);
 		i++;
 	}
+	/*free(strArray[i]);*/
+
 	free(strArray);
 }
