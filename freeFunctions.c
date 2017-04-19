@@ -2,9 +2,10 @@
 
 /**
  *freeEnvironList - frees the list
- *@env1: env1 of the nodes or start of them
- *Return: void
+ *@head: env1 of the nodes or start of them
+ *
  */
+
 void freeEnvironList(env *head)
 {
 	if (head == NULL)
@@ -14,20 +15,27 @@ void freeEnvironList(env *head)
 	free(head->key);
 	free(head);
 
-	/*
-	for (; head != NULL; head = next_node)
-	{
-		printf("Free env: %s, %s\n", head->key, head->value);
-		if (head->next != NULL) {
-			next_node = head->next;	
-			printf("Next node: %s, %s\n", next_node->key, next_node->value);
-		}
-		free(head->key);
-		free(head->value);
-		free(head);
-		printf("After free Next node: %s, %s\n", next_node->key, next_node->value);
-	}*/
+/* code to save for later:
+ *
+ *	for (; head != NULL; head = next_node)
+ *	{
+ *		printf("Free env: %s, %s\n", head->key, head->value);
+ *		if (head->next != NULL) {
+ *			next_node = head->next;
+ *			printf("Next node: %s, %s\n", next_node->key, next_node->value);
+ *		}
+ *		free(head->key);
+ *		free(head->value);
+ *		free(head);
+ *		printf("After free Next node: %s, %s\n", next_node->key, next_node->value);
+ *	}
+*/
 }
+
+/**
+ * freeTokenizedArray - function to free tokenized array
+ * @strArray: pointer to array of strings
+ */
 
 void freeTokenizedArray(char **strArray)
 {
@@ -37,9 +45,15 @@ void freeTokenizedArray(char **strArray)
 	free(strArray);
 }
 
+/**
+ * freeStringArray - function to free array of strings
+ * @strArray: pointer to array of strings
+ */
+
 void freeStringArray(char **strArray)
 {
 	int i = 0;
+
 	if (strArray == NULL)
 		return;
 
