@@ -15,7 +15,7 @@ void freeEnvironList(env *head)
 	free(head->key);
 	free(head);
 
-/* code to save for later:
+/*
  *
  *	for (; head != NULL; head = next_node)
  *	{
