@@ -31,8 +31,15 @@ before reading a command.
 
 
 .SH BUILTIN COMMANDS
+
 .B exit
 [n] - terminates the shell process with the exit status of n.
+
+.B env
+- prints out a list of environment variables
+
+.B setenv
+- add or change environment variable
 
 .SH SEE ALSO
     env(1), exec(2)
