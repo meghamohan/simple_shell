@@ -9,7 +9,6 @@
 
 int print_env_list(env **h, __attribute__((unused))char **cmds)
 {
-	unsigned int n;
 	env *temp = *h;
 
 	if (!temp)
