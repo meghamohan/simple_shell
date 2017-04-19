@@ -50,7 +50,7 @@ int _strlen(char *s)
 * @src: source string
 * Return: destination
 */
-void _strcpy(char *dest,const char *src)
+void _strcpy(char *dest, const char *src)
 {
 	int i, length;
 
@@ -61,7 +61,7 @@ void _strcpy(char *dest,const char *src)
 	{
 
 		dest[i] = src[i];
-		printf("%c",dest[i]);
+		printf("%c", dest[i]);
 	}
 }
 
@@ -71,7 +71,7 @@ void _strcpy(char *dest,const char *src)
 * @s2: takes in second string
 * Return: i, integer
 */
-int _strcmp(const char *s1,const char *s2)
+int _strcmp(const char *s1, const char *s2)
 {
 	int i = 0;
 
