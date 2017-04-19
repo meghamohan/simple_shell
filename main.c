@@ -1,6 +1,5 @@
 #include "shell.h"
 #include <string.h>
-#define PROMPT "myShell$ "
 
 /**
 * excute - executes the parent and child process
@@ -65,14 +64,8 @@ char **parseCommand(char *cmd, char **tokens)
 
 void printPrompt(env *head, int InteracFlag)
 {
-<<<<<<< HEAD
 	char **pathDirs = NULL, *cmd = NULL, **tokenizedArray, *cmdPath = NULL;
 	int i, handled, readStatus = 0;
-=======
-	char **temp = NULL;
-	char *cmd = NULL, **tokenizedArray, *tempStr1 = NULL;
-	int i = 0, readStatus = 0;
->>>>>>> a6ff7c1b9ee1ff98d63bda238b061156de2a6171
 	size_t n;
 	pathDirs = pathParse(head);
 	tokenizedArray = malloc(32 * sizeof(char *));
@@ -91,7 +84,7 @@ void printPrompt(env *head, int InteracFlag)
 			break;
 		if (_strcmp(cmd, "\n") == 0)
 		{
-			writeIt();
+			writePrompt();
 			continue;
 		}
 	
@@ -122,11 +115,6 @@ void printPrompt(env *head, int InteracFlag)
 					}
 					i++;
 				}
-/*				else
-				{
-				      write(STDOUT_FILENO, "Command does not exist\n", 24);
-				      break;
-				      } */
 			}
 		}
 		if (!handled) {
@@ -136,19 +124,14 @@ void printPrompt(env *head, int InteracFlag)
 		
 		/* Print prompt. */
 		if (InteracFlag)
-			writeIt();
+			writePrompt();
 	}
-<<<<<<< HEAD
 	/*freeTokenizedArray(tokenizedArray);*/
 	freeStringArray(pathDirs);
 	free(cmd);
 }
 
 
-=======
-	freeStringArray(temp);
-}
->>>>>>> a6ff7c1b9ee1ff98d63bda238b061156de2a6171
 /**
 * main - the main entry point of shell program
 * Return: always 0
@@ -163,7 +146,7 @@ int main(void)
 
 	if (S_ISCHR(interac.st_mode))
 	{
-		writeIt();
+		writePrompt();
 		InteracFlag = 1;
 	}
 	n1 = create_env_list(&head);
