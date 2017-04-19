@@ -1,7 +1,6 @@
 #include "shell.h"
 /**
-  * writeIt - function that writes to stdoutput
-  * @s: string to be written
+  * writePrompt - function that writes to stdoutput
   * Return: length of string written
   */
 int writePrompt(void)
@@ -11,6 +10,7 @@ int writePrompt(void)
 	i = write(1, PROMPT, _strlen(PROMPT));
 	return (i);
 }
+
 /**
  * _putchar - writes the character to stdout
  * @c: char to print
@@ -21,6 +21,7 @@ int _putchar(char c)
 {
 	return (write(1, &c, 1));
 }
+
 /**
  * printString - prints a string
  * @str: string to print
