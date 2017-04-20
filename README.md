@@ -81,3 +81,8 @@ Below are the functions present:
 	* ``void printString(char *str)`` : prints a string
 
 7. `builtinFunctions.c` : has function ``int getMyBuiltins(env **h, char **cmds)`` that checks if the input command is a builtin command or not and points to the corresponding builtin command function if it matches the string in the builtin struct.
+### Team Members
+
+Halina Veratsennik: [github account](https://github.com/halinav00), [twitter](https://twitter.com/HalinaV)
+
+Megha Mohan: [github account](https://github.com/meghamohan), [twitter](https://twitter.com/meghamohan1989)
