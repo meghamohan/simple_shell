@@ -4,7 +4,7 @@
 
 ## Description
 
-This project is aimed to replicate many of the function performed by a bash shell. This is created as a part of Holberton School curriculm. The project aims at learning how to build a simple shell ,understanding the concept of pid and ppid, understanding the difference between function and system calls, learning to create process, using the execve command, understanding about environ variables, implementing functions such as getline, strtok and built in functions like cd, setenv, unsetenv etc.
+This project is aimed to replicate many of the functions performed by sh shell. This is created as a part of Holberton School curriculm. The project aims at learning how to build a simple shell ,understanding the concept of pid and ppid, understanding the difference between function and system calls, learning to create process, using the execve command, understanding about environ variables, implementing functions such as getline, strtok and built in functions like cd, setenv, unsetenv etc.
 
 ### List of allowed functions and system calls
 * access : check user's permissions for a file
@@ -46,7 +46,7 @@ A built-in command is simply a command that the shell carries out itself, instea
 
 Secondly, a built-in command can affect the internal state of the shell. That's why commands like cd must be built-in, because an external program can't change the current directory of the shell. Other commands, like echo, might be built-in for efficiency, but there's no intrinsic reason they can't be external commands.
 
-####cd [directory] ``not yet implimented``
+####cd  ``not yet implimented``
 Switch to the specified directory (default HOME).  If an entry for CDPATH appears in the environment of the cd command or the shell variable CDPATH is set and the directory name does not begin with a slash, then the directories listed in CDPATH will be searched for the specified directory.  The format of CDPATH is the same as that of PATH.  If a single dash is specified as the argument, it will be replaced by the value of OLDPWD.
 
 #### env  [-] [NAME=VALUE]... [COMMAND [ARG]...]
@@ -61,7 +61,7 @@ The setenv() built-in adds the variable name to the environment with the value v
 #### unsetenv [VARIABLE] ``not yet implimented``
 The unsetenv() built-in deletes the variable name from the environment. If name does not exist in the environment, then the functionsucceeds, and the environment is unchanged.
 
-####alias [name[=string ...]] ``not yet implimented``
+####alias ``not yet implimented``
 If name=string is specified, the shell defines the alias name with value string.  If just name is specified, the value of the alias name is printed.  With no arguments, the alias builtin prints the names and values of all defined aliases (see unalias).
 
 ### external functions
