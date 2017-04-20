@@ -7,14 +7,14 @@ simple_shell [command]...
 
 .SH DESCRIPTION
 .B simple_shell
-is a simples version of a command line interpretor for the system
+simple_shell is an sh-compatible command language interpreter that executes commands read from the standard input. simple_shell is intended to be a conformant implementation of the Shell and Utilities portion of the IEEE POSIX specification (IEEE Standard 1003.1). simple_shell can be configured to be POSIX-conformant by default.
 
 .SH OVERVIEW
-Simple_shell is executing commands read from a terminal, interprets them and executes the command.
+Simple_shell is executing commands read from a terminal, interprets them and executes the command. The simple_shell is a command that reads lines from either a file or the terminal, interprets them, and generally executes other commands.  It is the program that is running when the user runs gcc -Wall -Werror -Wextra -pedantic *.c -o hsh and runs the executable file, ./hsh. The simple_shell implements a language that has flow control constructs, a macro facility that provides a variety of features in addition to data storage, along with built in history and line editing capabilities.  It incorporates many features to aid interactive use and has the advantage that the interpretative language is common to both interactive and non-interactive use (shell scripts).  That is, commands can be typed directly to the running shell or can be put into a file and the file can be executed directly by the shell.
 
 .SH INVOCATIONLS
 
-The simple_shell is initiated by using ./simple_shell
+The simple_shell is initiated by using ./hsh
 
 .SH SIMPLE COMMANDS
     A simple command is a sequance of non blank words separated by space or a tab. A first word specifies the name of the command. If a simple command has been recognized, the simple_shell will do following:
