@@ -11,7 +11,7 @@ void excute(char **tokens, char *cmdPath)
 {
 	pid_t pid;
 	int status;
-	
+
 	pid = fork();
 	if (pid == -1)
 	{
@@ -19,9 +19,9 @@ void excute(char **tokens, char *cmdPath)
 	}
 	if (pid == 0)
 	{
-		if ((execve(cmdPath, tokens, environ)) == -1)
+		if (execve(cmdPath, tokens, environ) == -1)
 		{
-		  perror("No such file or directory\n");
+			perror("No such file or directory\n");
 		}
 	}
 	else
@@ -32,6 +32,7 @@ void excute(char **tokens, char *cmdPath)
 /**
 * parseCommand - tokenizes the commandline that is read from
 * the terminal
+* @tokens : array to where the tokenized command has to be stored
 * @cmd : the command that is read using readline command
 * Return: returns a string array of the tokenized strings
 */
@@ -57,72 +58,94 @@ char **parseCommand(char *cmd, char **tokens)
 	return (tokens);
 }
 
+
+/**
+* handleExecutableCommands - checks if the executable path is valid
+* r not and executes if it is
+* @tokenizedArray : tokenized array of commands
+* @pathDirs : string array of path directories
+* Return: returns if the command has been executed or not
+*/
+int handleExecutableCommands(char **tokenizedArray, char **pathDirs)
+{
+	char *cmdPath = NULL;
+	int i = 0;
+
+	if (getExecutablePath(tokenizedArray[0]))
+	{
+	/*cmdPath = tokenizedArray[0];*/
+		excute(tokenizedArray, tokenizedArray[0]);
+		return (1);
+	}
+	else
+	{
+		while (pathDirs[i])
+		{
+			cmdPath = str_concat(pathDirs[i], "/");
+			cmdPath = str_concat(cmdPath, tokenizedArray[0]);
+			if (getExecutablePath(cmdPath))
+			{
+				excute(tokenizedArray, cmdPath);
+				return (1);
+			}
+			i++;
+		}
+	}
+	return (0);
+
+}
+
+
+
 /**
 * printPrompt - prints prompt, gets a line containing command
 * parses it and executes it by calling system call execve
+* @head : env linked list where environ variables are stored
+* @InteracFlag : flag to chekc if the mode is interactive or not
+* Return - nothing
 */
 
 void printPrompt(env *head, int InteracFlag)
 {
-	char **pathDirs = NULL, *cmd = NULL, **tokenizedArray, *cmdPath = NULL;
-	int i, handled, readStatus = 0;
-	size_t n;
+	char **pathDirs = NULL, *cmd = NULL, **tokenizedArray;
+	int  handled, readStatus = 0; size_t n;
+
 	pathDirs = pathParse(head);
 	tokenizedArray = malloc(32 * sizeof(char *));
-
 	n = 0;
 	while ((readStatus = getline(&cmd, &n, stdin)) != EOF)
-	{	
-		i = handled = 0;
+	{
+		handled = 0;
 		if (!readStatus)
 		{
 			perror("Error in reading the command\n");
 			freeStringArray(tokenizedArray);
 			exit(1);
 		}
-		if(_strcmp(cmd, "exit") == 0)
+		if (_strcmp(cmd, "exit") == 0)
 			break;
 		if (_strcmp(cmd, "\n") == 0)
 		{
 			writePrompt();
 			continue;
 		}
-		/* Parse command in to tokenized array.*/	
+		/* Parse command in to tokenized array.*/
 		parseCommand(cmd, tokenizedArray);
-		/* Handle builtins */ 
+		/* Handle builtins */
 		handled = getMyBuiltins(&head, tokenizedArray);
 		/* Handle full path commands. */
-		if (!handled) {
-			if (getExecutablePath(tokenizedArray[0]))
-			{
-				/*cmdPath = tokenizedArray[0];*/
-				excute(tokenizedArray, tokenizedArray[0]);
-				handled = 1;
-			}
-			else {
-				while (pathDirs[i])
-				{
-					cmdPath = str_concat(pathDirs[i], "/");
-					cmdPath = str_concat(cmdPath, tokenizedArray[0]);
-					if (getExecutablePath(cmdPath))
-					{
-						excute(tokenizedArray, cmdPath);
-						handled = 1;
-						break;
-					}
-					i++;
-				}
-			}
+		if (!handled)
+		{
+			handled = handleExecutableCommands(tokenizedArray, pathDirs);
 		}
-		if (!handled) {
+		if (!handled)
 			perror("Command Not Found.\n");
-		}	
 		/* Print prompt. */
 		if (InteracFlag)
 			writePrompt();
 	}
 	freeStringArray(pathDirs);
-	free(cmd);
+	free(cmd); free(tokenizedArray);
 }
 
 

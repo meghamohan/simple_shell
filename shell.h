@@ -69,6 +69,7 @@ void _strcpy(char *dest, const char *src);
 int _strcmp(const char *s1, const char *s2);
 
 /* main.c - functions */
+int handleExecutableCommands(char **tokenizedArray, char **pathDirs);
 void excute(char **tokens, char *cmdPath);
 char **parseCommand(char *cmd, char **tokens);
 void printPrompt(env *head, int InteracFlag);

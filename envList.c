@@ -8,25 +8,19 @@
 env *addEnv(env **head, char *env_var)
 {
 	env *endNode, *temp;
-	char *dupKey, *dupValue;
 
-	dupKey = dupValue = NULL;
 	if (env_var == NULL)
 		return (NULL);
 	endNode = malloc(sizeof(env));
 	if (endNode == NULL)
 		return (NULL);
-	dupKey = _strdup(strtok(env_var, "="));
-	if (!dupKey)
+	endNode->key = _strdup(strtok(env_var, "="));
+	if (!endNode->key)
 	{
-		free(dupKey);
 		free(endNode);
 		return (NULL);
 	}
-	endNode->key = dupKey;
-	dupValue = _strdup(strtok(NULL, "\0"));
-	endNode->value = dupValue;
-	printf("here %s\n",endNode->key);
+	endNode->value = _strdup(strtok(NULL, "\0"));
 	endNode->next = NULL;
 	if (*head == NULL)
 	{

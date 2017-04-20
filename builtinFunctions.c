@@ -11,7 +11,7 @@ int getMyBuiltins(env **h, char **cmds)
 {
 	int i;
 
-	builtinFunc builtIns [] = {
+	builtinFunc builtIns[] = {
 		{"setenv", _setEnv},
 		{"env", print_env_list},
 		{NULL, NULL}

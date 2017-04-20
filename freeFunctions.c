@@ -13,6 +13,7 @@ void freeEnvironList(env *head)
 	if (head->next != NULL)
 		freeEnvironList(head->next);
 	free(head->key);
+	free(head->value);
 	free(head);
 
 /*
