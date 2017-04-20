@@ -38,8 +38,8 @@ before reading a command.
 .B env
 - prints out a list of environment variables
 
-.B setenv
-- add or change environment variable
+.B setenv [VARIABLE] [VALUE]
+- The setenv() built-in adds the variable name to the environment with the value value, if name does not already exist. If name does exist in the environment, then its value is changed to value if overwrite is nonzero; if overwrite is zero, then the value of name is not changed. This function makes copies of the strings pointed to by name and value.
 
 .SH SEE ALSO
     env(1), exec(2)
