@@ -159,7 +159,7 @@ int main(void)
 {
 	env *head = NULL;
 	struct stat interac;
-	int InteracFlag = 0, n1;
+	int InteracFlag = 0, envLL;
 
 	fstat(STDIN_FILENO, &interac);
 
@@ -168,8 +168,8 @@ int main(void)
 		writePrompt();
 		InteracFlag = 1;
 	}
-	n1 = create_env_list(&head);
-	if (!n1)
+	envLL = create_env_list(&head);
+	if (!envLL)
 		perror("env variables not created\n");
 	printPrompt(head, InteracFlag);
 	freeEnvironList(head);
