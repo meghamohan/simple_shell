@@ -99,7 +99,7 @@ char **pathParse(env *envList)
 	tokenizedPath = strtok(pathValue2, delim);
 	while (tokenizedPath != NULL)
 	{
-		pathList[i] = strdup(tokenizedPath);
+		pathList[i] = _strdup(tokenizedPath);
 		i++;
 		tokenizedPath = strtok(NULL, delim);
 	}
