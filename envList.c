@@ -8,15 +8,25 @@
 env *addEnv(env **head, char *env_var)
 {
 	env *endNode, *temp;
+	char *dupKey, *dupValue;
 
+	dupKey = dupValue = NULL;
 	if (env_var == NULL)
 		return (NULL);
-	endNode = (env *)malloc(sizeof(env));
+	endNode = malloc(sizeof(env));
 	if (endNode == NULL)
 		return (NULL);
-
-	endNode->key = strtok(env_var, "=");
-	endNode->value = strtok(NULL, "\0");
+	dupKey = _strdup(strtok(env_var, "="));
+	if (!dupKey)
+	{
+		free(dupKey);
+		free(endNode);
+		return (NULL);
+	}
+	endNode->key = dupKey;
+	dupValue = _strdup(strtok(NULL, "\0"));
+	endNode->value = dupValue;
+	printf("here %s\n",endNode->key);
 	endNode->next = NULL;
 	if (*head == NULL)
 	{
@@ -59,17 +69,19 @@ int create_env_list(env **head)
 char *_getenv(env *envVars, const char *name)
 {
 	env *temp;
+	char *strDup = NULL;
 
 	temp = envVars;
 	while (temp != NULL)
 	{
 		if (strcmp(temp->key, name) == 0)
-			return (temp->value);
+		{
+			strDup = _strdup(temp->value);
+			break;
+		}
 		temp = temp->next;
 	}
-	freeEnvironList(temp);
-
-	return (NULL);
+	return (strDup);
 }
 
 /**
@@ -98,7 +110,6 @@ char **pathParse(env *envList)
 		tokenizedPath = strtok(NULL, delim);
 	}
 	pathList[i] = NULL;
-
 	free(pathValue2);
 	return (pathList);
 }

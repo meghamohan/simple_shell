@@ -74,7 +74,6 @@ void printPrompt(env *head, int InteracFlag)
 	while ((readStatus = getline(&cmd, &n, stdin)) != EOF)
 	{	
 		i = handled = 0;
-
 		if (!readStatus)
 		{
 			perror("Error in reading the command\n");
@@ -88,13 +87,10 @@ void printPrompt(env *head, int InteracFlag)
 			writePrompt();
 			continue;
 		}
-	
 		/* Parse command in to tokenized array.*/	
 		parseCommand(cmd, tokenizedArray);
-		
 		/* Handle builtins */ 
 		handled = getMyBuiltins(&head, tokenizedArray);
-
 		/* Handle full path commands. */
 		if (!handled) {
 			if (getExecutablePath(tokenizedArray[0]))
@@ -120,14 +116,11 @@ void printPrompt(env *head, int InteracFlag)
 		}
 		if (!handled) {
 			perror("Command Not Found.\n");
-		}
-		
-		
+		}	
 		/* Print prompt. */
 		if (InteracFlag)
 			writePrompt();
 	}
-	/*freeTokenizedArray(tokenizedArray);*/
 	freeStringArray(pathDirs);
 	free(cmd);
 }
