@@ -38,7 +38,12 @@ int _setEnv(env **h, char **cmds)
 {
 	char *str1, *str;
 	env **tmp;
-
+	
+	if (!cmds[1] || !cmds[2])
+	{
+		perror("environ value cannot be null\n");
+		return (0);
+	}
 	str1 = str_concat(cmds[1], "=");
 	str = str_concat(str1, cmds[2]);
 	tmp = h;
