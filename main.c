@@ -68,7 +68,7 @@ char **parseCommand(char *cmd, char **tokens)
 */
 int handleExecutableCommands(char **tokenizedArray, char **pathDirs)
 {
-	char *cmdPath = NULL;
+	char *cmdPath = NULL, *cmdPath1 = NULL;
 	int i = 0;
 
 	if (getExecutablePath(tokenizedArray[0]))
@@ -81,14 +81,16 @@ int handleExecutableCommands(char **tokenizedArray, char **pathDirs)
 	{
 		while (pathDirs[i])
 		{
-			cmdPath = str_concat(pathDirs[i], "/");
-			cmdPath = str_concat(cmdPath, tokenizedArray[0]);
+			cmdPath1 = str_concat(pathDirs[i], "/");
+			cmdPath = str_concat(cmdPath1, tokenizedArray[0]);
 			if (getExecutablePath(cmdPath))
 			{
 				excute(tokenizedArray, cmdPath);
+				free(cmdPath); free(cmdPath1);
 				return (1);
 			}
 			i++;
+			free(cmdPath); free(cmdPath1);
 		}
 	}
 	return (0);
@@ -135,11 +137,11 @@ void printPrompt(env *head, int InteracFlag)
 		handled = getMyBuiltins(&head, tokenizedArray);
 		/* Handle full path commands. */
 		if (!handled)
-		{
 			handled = handleExecutableCommands(tokenizedArray, pathDirs);
-		}
 		if (!handled)
+		{
 			perror("Command Not Found.\n");
+		}
 		/* Print prompt. */
 		if (InteracFlag)
 			writePrompt();

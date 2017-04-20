@@ -49,8 +49,8 @@ int create_env_list(env **head)
 		env_dup = _strdup(environ[i]);
 		addEnv(head, env_dup);
 		i++;
+		free(env_dup);
 	}
-	free(env_dup);
 	return (i);
 }
 
@@ -104,7 +104,7 @@ char **pathParse(env *envList)
 		tokenizedPath = strtok(NULL, delim);
 	}
 	pathList[i] = NULL;
-	free(pathValue2);
+	free(pathValue2); free(pathValue);
 	return (pathList);
 }
 

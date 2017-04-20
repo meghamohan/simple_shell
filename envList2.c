@@ -36,12 +36,13 @@ int print_env_list(env **h, __attribute__((unused))char **cmds)
 
 int _setEnv(env **h, char **cmds)
 {
-	char *str;
+	char *str1, *str;
 	env **tmp;
 
-	str = str_concat(cmds[1], "=");
-	str = str_concat(str, cmds[2]);
+	str1 = str_concat(cmds[1], "=");
+	str = str_concat(str1, cmds[2]);
 	tmp = h;
 	addEnv(tmp, str);
+	free(str); free(str1);
 	return (1);
 }
